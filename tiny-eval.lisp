@@ -1,8 +1,6 @@
 ;;;; Two tiny evaluators
 ;;;
 
-(in-package :cl-user)
-
 #+org.tfeb.tools.require-module
 (org.tfeb.tools.require-module:needs
  (:org.tfeb.conduit-packages :compile t)
@@ -12,7 +10,9 @@
    "repl")
   :compile t))
 
-(org.tfeb.conduit-packages:defpackage :org.tfeb.tiny-eval
+(in-package :org.tfeb.clc-user)
+
+(defpackage :org.tfeb.tiny-eval
   (:use)
   (:extends
    :org.tfeb.tiny-eval.common
