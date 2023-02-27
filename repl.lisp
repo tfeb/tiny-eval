@@ -43,14 +43,18 @@
                  (read *standard-input* nil history))))
         ((eql read eof-cookie) (values))
       (flet ((ep/maybe-errors (form)
-               (handler-bind ((error (lambda (e)
-                                       (format *error-output* "~&Error: ~A~%" e)
-                                       (when handle-errors
-                                         (go end)))))
-                 (dolist (v (multiple-value-list (funcall evaluator form bindings)))
-                   (format *standard-output* "~%~S" v))
-                 (terpri *standard-output*)
-                 (finish-output *standard-output*))))
+               (restart-case
+                   (handler-bind ((error (lambda (e)
+                                           (format *error-output* "~&Error: ~A~%" e)
+                                           (when handle-errors
+                                             (go end)))))
+                     (dolist (v (multiple-value-list (funcall evaluator form bindings)))
+                       (format *standard-output* "~%~S" v)
+                       (terpri *standard-output*)
+                       (finish-output *standard-output*)))
+                 (continue ()
+                   :report "Return to REPL"
+                   (values)))))
         (matching read
           ((is ':q)
            (return-from repl (values)))
