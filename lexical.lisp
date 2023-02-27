@@ -5,7 +5,7 @@
 (org.tfeb.tools.require-module:needs
  ((:org.tfeb.hax.spam
    :org.tfeb.hax.iterate) :compile t)
- "common")
+ ("common" :compile t))
 
 (defpackage :org.tfeb.tiny-eval.lexical
   (:use :cl
